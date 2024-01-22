@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import appFirebase from '../credenciales';
 import { getFirestore, collection, addDoc } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-
+import appFirebaseLogin from '../credencialesConfigLog';
+import { getAuth, signOut } from 'firebase/auth';
+const auth = getAuth(appFirebaseLogin)
 const db = getFirestore(appFirebase);
 const storage = getStorage(appFirebase);
 
-const Form = () => {
+const Form = ({correoUsuario}) => {
   const [urlImDesc, setUrlImDesc] = useState('');
 
   const guardarInfo = async (e) => {
@@ -83,7 +85,11 @@ const Form = () => {
   };
 
   return (
+    
     <div className='card card-body'>
+<div>
+<h8 className="text-right">Bienvenido {correoUsuario} <button className="btn btn-primary" onClick={()=> signOut(auth)}>cerrar sesión</button></h8>
+        </div>
       <h3 className='text-center'>Agregar Señales</h3>
       <form onSubmit={guardarInfo}>
         <label>Nombre:</label>
@@ -106,7 +112,9 @@ const Form = () => {
         <input type="file" id="file" placeholder='Agregar Imagen' className='form-control' onChange={FileHandler}></input>
         <button className='btn btn-primary mt-3 form control'>Guardar</button>
       </form>
+      
     </div>
+    
   );
 };
 
